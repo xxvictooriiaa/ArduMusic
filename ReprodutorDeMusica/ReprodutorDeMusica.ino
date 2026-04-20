@@ -8,7 +8,7 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 19/04/2026 as 18:03
+ * ÚLTIMA MODIFICAÇÃO: 20/04/2026 as 19:00
  * VERSÃO: 0.1.0
  * =========================================================================
  */
@@ -19,13 +19,24 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define BUZZER 9
 #define LED_VERDE 7
 #define LED_VERMELHA 8
+#define BOTAO_UP 10
+#define BOTAO_DOWN 8
+#define BOTAO_PLAY_PAUSE 7
+#define BOTAO_STOP 6
 
 void setup()
 {
   Serial.begin(9600);
-  lcd.begin(16,2);//tamanho em linhas e colunas do lcd display
-  lcd.clear(); // limpar a tela
+  lcd.begin(16,2);// Definir o Tamanho em linhas e colunas do lcd display
+  lcd.clear(); // Limpar a tela do lcd
   pinMode(BUZZER, OUTPUT);
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_VERMELHA, OUTPUT);
+  pinMode(BOTAO_UP, INPUT_PULLUP);
+  pinMode(BOTAO_DOWN, INPUT_PULLUP);
+  pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
+  pinMode(BOTAO_STOP, INPUT_PULLUP);
+
 }
 
 void loop()
