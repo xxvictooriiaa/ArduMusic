@@ -8,7 +8,7 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 20/04/2026 as 19:00
+ * ÚLTIMA MODIFICAÇÃO: 25/04/2026 as 15:10
  * VERSÃO: 0.1.0
  * =========================================================================
  */
@@ -17,12 +17,12 @@
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 #define BUZZER 9
-#define LED_VERDE 7
-#define LED_VERMELHA 8
-#define BOTAO_UP 10
-#define BOTAO_DOWN 8
-#define BOTAO_PLAY_PAUSE 7
-#define BOTAO_STOP 6
+#define LED_VERDE A2
+#define LED_VERMELHA A1
+#define BOTAO_UP 6
+#define BOTAO_DOWN 7
+#define BOTAO_PLAY_PAUSE 8
+#define BOTAO_STOP 13
 
 void setup()
 {
