@@ -8,7 +8,7 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 25/04/2026 as 15:10
+ * ÚLTIMA MODIFICAÇÃO: 26/04/2026 as 10:55
  * VERSÃO: 0.1.0
  * =========================================================================
  */
@@ -24,6 +24,16 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define BOTAO_PLAY_PAUSE 8
 #define BOTAO_STOP 13
 
+// Lista de Músicas -------------------------------------------------------------
+String musicas[] = {"Zelda", "PacMan", "Mario", "AsaBranca", "Nokia"};
+int musicaselecionada = 0;
+
+bool tocando = false;
+bool pausado = false;
+bool musicaIniciada = false;
+
+//--------------------------------------------------------------------------------------
+
 void setup()
 {
   Serial.begin(9600);
@@ -37,13 +47,75 @@ void setup()
   pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
   pinMode(BOTAO_STOP, INPUT_PULLUP);
 
+mostrarMenu();
 }
-
+// Config De Seleção de Música ---------------------------------------------------------------------
 void loop()
 {
-  lcd.setCursor(3,0);
-  lcd.print("Hello world");
-  // SOM
-  tone(BUZZER, 800, 1000);
-  delay(2000); 
+  // PULL UP --------
+  if (digitalRead(BOTAO_UP) == LOW) {
+    musicaselecionada = (musicaselecionada + 1) % 5;
+    mostrarMenu();
+    delay(300);
+  }
+
+  // PULL DOWN---------
+  if (digitalRead(BOTAO_DOWN) == LOW) {
+    musicaselecionada = (musicaselecionada - 1 + 5) % 5;
+    mostrarMenu();
+    delay(300);
+  }
+
+  /// Pausa e Play -------------
+if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
+    if (!tocando) {
+      tocando = true;
+      pausado = false;
+      digitalWrite(LED_VERDE, HIGH);
+      digitalWrite(LED_VERMELHA, LOW);
+    } 
+    else {
+      pausado = !pausado;
+
+      // Futuramente vai Alterna os led entre Verde (Tocando) e Vermelho (Pausado)
+      digitalWrite(LED_VERDE, !pausado);
+      digitalWrite(LED_VERMELHA, pausado);
+    }
+    delay(300);
+  }
+
+  // STOP --------------------
+ if (digitalRead(BOTAO_STOP) == LOW) {
+    noTone(BUZZER);
+    tocando = false;
+    pausado = false;
+    musicaIniciada = false; // Vai dar reset pra poder tocar de novo
+    
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_VERMELHA, HIGH);
+    
+    mostrarMenu();
+    delay(300);
+
+
+  // EXECUTA A MÚSICA FORA DOS BOTÕES ♪♬♫
+if (tocando && !pausado && !musicaIniciada) {
+  musicaIniciada = true;
+  // tocarMusica(musicaselecionada);
+}
+  }
+}
+// ------------------ Função DO MENU ---------------------------
+void mostrarMenu() {
+  lcd.clear();
+  
+  // LINHA 0: Mostra a posição e o nome da música
+  lcd.setCursor(0, 0);
+  lcd.print(musicaselecionada + 1); 
+  lcd.print("/5 ");
+  lcd.print(musicas[musicaselecionada]);
+
+  // LINHA 1: Instrução para o usuário
+  lcd.setCursor(0, 1);
+  lcd.print("Selecione..."); 
 }
