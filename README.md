@@ -42,7 +42,7 @@ pinMode(BOTAO_UP, INPUT_PULLUP);
 pinMode(BOTAO_DOWN, INPUT_PULLUP);
 pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
 pinMode(BOTAO_STOP, INPUT_PULLUP);
-
+```
 ##
 
 ## Atualização do projeto – Dia 26/04/2026
@@ -52,6 +52,7 @@ Também foi feitas implementações para o futuro como:
 - Integração dos LEDs com as variáveis de estado, onde o LED verde indica reprodução ativa e o LED vermelho sinaliza pausa ou parada do sistema.
 -Implementação de uma trava lógica (musicaIniciada) para garantir que a melodia seja disparada apenas uma vez ao apertar play, evitando bugs de reinicialização contínua do som durante o loop.
 
+## Codigo Implementado
 ```cpp
 // Config De Seleção de Música ---------------------------------------------------------------------
 void loop()
@@ -123,3 +124,6 @@ void mostrarMenu() {
   lcd.setCursor(0, 1);
   lcd.print("Selecione..."); 
 }
+```
+## Imagem :
+  <img src="imagens/arduino2.png" width="500">
