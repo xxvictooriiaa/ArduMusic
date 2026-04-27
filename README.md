@@ -4,18 +4,18 @@ Um software arduino para tocar musicas em bips de buzzer
 
 ## Montagem inicial do projeto – Dia 20/04/2026
 
-No dia **20/04/2026** foi realizada a montagem inicial do circuito do projeto de um reprodutor de música utilizando a plataforma TickerCard. Nesta etapa, foi feita a organização dos principais componentes eletrônicos na protoboard e a conexão inicial entre o microcontrolador e os dispositivos responsáveis pela interface do sistema.
+No dia **20/04/2026** foi realizada a montagem inicial do circuito do projeto de um reprodutor de música utilizando a plataforma [Tinkercad](https://www.tinkercad.com/). Nesta primeira etapa, foi feita uma breve organização dos principais componentes eletrônicos na protoboard e a primeira conexão inicial entre o microcontrolador e o LCD(Display responsável pela interface do sistema).
 
-Foram conectados os seguintes elementos principais:
+Abaixo os seguintes Componentes Eletrônicos e suas funcionalidades no projeto:
 
 - Display LCD 16x2 para exibição das informações do sistema  
-- Potenciômetro para ajuste de contraste do display  
-- Buzzer piezoelétrico para reprodução sonora  
-- LEDs verde e vermelho para sinalização do estado do sistema  
-- Quatro botões para controle de navegação e seleção  
-- Resistores para proteção e controle dos sinais elétricos  
+- Potenciômetro para ajuste de contraste do display 
+- Buzzer para reprodução sonora
+- LEDs, sendo uma verde e uma vermelha para sinalização do estado da musica, tocando ou pausada
+- Quatro botões para controle de navegação e seleção das musicas
+- Resistores para proteção dos demais componentes
 
-O objetivo desta etapa foi validar a comunicação entre os componentes e estruturar a base física do projeto para a implementação do software nas próximas fases.
+O objetivo desta etapa foi validar a comunicação entre os componentes e implementar uma estrutura inicial para a implementação do software nas próximas fases.
 
 
 ## Imagem da montagem
@@ -35,7 +35,7 @@ O objetivo desta etapa foi validar a comunicação entre os componentes e estrut
 
 No dia **24/04/2026** foi realizada a atualização do circuito com a implementação dos resistores de referência pull-up e pull-down para melhorar a estabilidade dos botões do sistema.
 
-Também foi iniciada a configuração das entradas no código para leitura mais confiável dos comandos do usuário, utilizando a configuração:
+Também foi feita a configuração das entradas no código para leitura mais confiável dos comandos do usuário, utilizando a configuração:
 
 ```cpp
 pinMode(BOTAO_UP, INPUT_PULLUP);
@@ -46,7 +46,7 @@ pinMode(BOTAO_STOP, INPUT_PULLUP);
 ##
 
 ## Atualização do projeto – Dia 26/04/2026
- No dia **26/04/2026**, foi feito o código para a Navegação de Pull Up(Mexer Para Cima) e Pull Down(Mexer para Baixo), uma lógica de menu utilizando aritmética modular (%), permitando que o usuário navegue entre as 5 música de forma infinita retornando ao início ou ao fim da lista automaticamente. Também foi acrescentado o estado de Play,Pause e Stop, onde o mesmo botão alterna entre os estados de "Tocando" e "Pausado" (Toggle). O botão de Stop foi configurado para realizar um reset total das variáveis e interromper o sinal sonoro imediatamente.E por fim, foi colocado a função mostrarMenu() para exibir no LCD a posição real da faixa e o nome da música, mantendo uma instrução fixa de "Selecione..." na segunda linha para melhor usabilidade.
+ No dia **26/04/2026**, foi feito o código para a Navegação de Pull Up(Mexer Para Cima) e Pull Down(Mexer para Baixo), uma lógica de menu utilizando aritmética modular (%), permitando que o usuário navegue entre as 5 músicas de forma infinita retornando ao início ou ao fim da lista automaticamente. Também foi acrescentado o estado de Play,Pause e Stop, onde o mesmo botão alterna entre os estados de "Tocando" e "Pausado" (Toggle). O botão de Stop foi configurado para realizar um reset total das variáveis e interromper o sinal sonoro imediatamente.E por fim, foi colocado a função mostrarMenu() para exibir no LCD a posição real da faixa e o nome da música, mantendo uma instrução fixa de "Selecione..." na segunda linha para melhor usabilidade.
 
 Também foi feitas implementações para o futuro como:
 - Integração dos LEDs com as variáveis de estado, onde o LED verde indica reprodução ativa e o LED vermelho sinaliza pausa ou parada do sistema.
