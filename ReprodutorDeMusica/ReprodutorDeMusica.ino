@@ -16,7 +16,7 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-#define BUZZER 9
+#define BUZZER 8
 #define LED_VERDE A2
 #define LED_VERMELHA A1
 #define BOTAO_UP 6
@@ -36,6 +36,7 @@ bool musicaIniciada = false;
 
 void setup()
 {
+  
   Serial.begin(9600);
   lcd.begin(16,2);// Definir o Tamanho em linhas e colunas do lcd display
   lcd.clear(); // Limpar a tela do lcd
@@ -47,27 +48,27 @@ void setup()
   pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
   pinMode(BOTAO_STOP, INPUT_PULLUP);
 
-mostrarMenu();
+  mostrarMenu();
 }
-// Config De Seleção de Música ---------------------------------------------------------------------
-void loop()
-{
-  // PULL UP --------
+
+
+void loop(){
+ 
+  // botão próxima musica PULL UP
   if (digitalRead(BOTAO_UP) == LOW) {
     musicaselecionada = (musicaselecionada + 1) % 5;
     mostrarMenu();
     delay(300);
   }
-
-  // PULL DOWN---------
+  // botão música anterior PULL DOWN
   if (digitalRead(BOTAO_DOWN) == HIGH) {
     musicaselecionada = (musicaselecionada - 1 + 5) % 5;
     mostrarMenu();
     delay(300);
   }
-
+  /*
   /// Pausa e Play -------------
-if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
+  if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
     if (!tocando) {
       tocando = true;
       pausado = false;
@@ -97,14 +98,10 @@ if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
     mostrarMenu();
     delay(300);
 
-
-  // EXECUTA A MÚSICA FORA DOS BOTÕES ♪♬♫
-if (tocando && !pausado && !musicaIniciada) {
-  musicaIniciada = true;
-  // tocarMusica(musicaselecionada);
-}
   }
+  */
 }
+
 // ------------------ Função DO MENU ---------------------------
 void mostrarMenu() {
   lcd.clear();
