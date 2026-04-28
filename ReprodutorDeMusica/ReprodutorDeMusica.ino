@@ -60,7 +60,7 @@ void loop()
   }
 
   // PULL DOWN---------
-  if (digitalRead(BOTAO_DOWN) == LOW) {
+  if (digitalRead(BOTAO_DOWN) == HIGH) {
     musicaselecionada = (musicaselecionada - 1 + 5) % 5;
     mostrarMenu();
     delay(300);
