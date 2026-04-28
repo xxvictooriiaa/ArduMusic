@@ -47,13 +47,24 @@ void setup()
   pinMode(BOTAO_DOWN, INPUT_PULLUP);
   pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
   pinMode(BOTAO_STOP, INPUT_PULLUP);
+  
+  // bip de inicio
+  tone(BUZZER, 500);
+  delay(100);
+  tone(BUZZER, 800); 
+  delay(100);
+  tone(BUZZER, 1000); 
+  delay(100);
+  tone(BUZZER, 1200); 
+  delay(500);
+  noTone(BUZZER);
 
   mostrarMenu();
 }
 
 
 void loop(){
- 
+  noTone(BUZZER);
   // botão próxima musica PULL UP
   if (digitalRead(BOTAO_UP) == LOW) {
     musicaselecionada = (musicaselecionada + 1) % 5;
@@ -66,9 +77,9 @@ void loop(){
     mostrarMenu();
     delay(300);
   }
-  /*
+/*
   /// Pausa e Play -------------
-  if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
+if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
     if (!tocando) {
       tocando = true;
       pausado = false;
