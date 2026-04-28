@@ -16,7 +16,7 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-#define BUZZER 8
+#define BUZZER 9
 #define LED_VERDE A2
 #define LED_VERMELHA A1
 #define BOTAO_UP 6
