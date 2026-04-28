@@ -44,9 +44,9 @@ void setup()
   pinMode(LED_VERDE, OUTPUT);
   pinMode(LED_VERMELHA, OUTPUT);
   pinMode(BOTAO_UP, INPUT_PULLUP);
-  pinMode(BOTAO_DOWN, INPUT_PULLUP);
-  pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
-  pinMode(BOTAO_STOP, INPUT_PULLUP);
+  pinMode(BOTAO_DOWN, INPUT);
+  pinMode(BOTAO_PLAY_PAUSE, INPUT);
+  pinMode(BOTAO_STOP, INPUT);
   
   // bip de inicio
   tone(BUZZER, 500);
