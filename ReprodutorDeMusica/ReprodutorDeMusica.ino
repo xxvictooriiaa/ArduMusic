@@ -16,10 +16,10 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-#define BUZZER 9
+#define BUZZER 6
 #define LED_VERDE A2
 #define LED_VERMELHA A1
-#define BOTAO_UP 6
+#define BOTAO_UP 9
 #define BOTAO_DOWN 7
 #define BOTAO_PLAY_PAUSE 8
 #define BOTAO_STOP 13
@@ -34,12 +34,14 @@ bool musicaIniciada = false;
 
 //--------------------------------------------------------------------------------------
 
-void setup()
-{
-  
+void setup(){
+ 
   Serial.begin(9600);
+  
   lcd.begin(16,2);// Definir o Tamanho em linhas e colunas do lcd display
   lcd.clear(); // Limpar a tela do lcd
+  
+  // Definindo pinos
   pinMode(BUZZER, OUTPUT);
   pinMode(LED_VERDE, OUTPUT);
   pinMode(LED_VERMELHA, OUTPUT);
@@ -48,23 +50,40 @@ void setup()
   pinMode(BOTAO_PLAY_PAUSE, INPUT);
   pinMode(BOTAO_STOP, INPUT);
   
-  // bip de inicio
-  tone(BUZZER, 500);
-  delay(100);
-  tone(BUZZER, 800); 
-  delay(100);
-  tone(BUZZER, 1000); 
-  delay(100);
-  tone(BUZZER, 1200); 
-  delay(500);
-  noTone(BUZZER);
+  // bip de inicio - Por Lauanda
+  tone(BUZZER, 220, 200);
+  delay(250);
+  tone(BUZZER, 640, 200);
+  delay(250);
+  tone(BUZZER, 880, 400);
+  delay(450);
+  
+  // menu inicial
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Reprodutor MP3");
+  delay(2000);
 
+  lcd.clear();
+  lcd.setCursor(3, 0);
+  lcd.print("Feito por:");
+  delay(1000);
+  
+  lcd.clear();
+  lcd.setCursor( 0);
+  lcd.print("Lauanda e");
+  lcd.setCursor(3, 1);
+  lcd.print("Victoria");
+  delay(3000); // Espera 3 segundos para lerem os nomes
+
+  lcd.clear(); // Limpa para entrar no menu principal
   mostrarMenu();
 }
 
 
 void loop(){
-  noTone(BUZZER);
+  //noTone(BUZZER);
+  //digitalWrite(BUZZER,LOW);
   // botão próxima musica PULL UP
   if (digitalRead(BOTAO_UP) == LOW) {
     musicaselecionada = (musicaselecionada + 1) % 5;
