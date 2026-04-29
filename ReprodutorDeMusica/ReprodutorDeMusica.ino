@@ -70,7 +70,7 @@ void setup(){
   delay(1000);
   
   lcd.clear();
-  lcd.setCursor( 0);
+  lcd.setCursor(3, 0);
   lcd.print("Lauanda e");
   lcd.setCursor(3, 1);
   lcd.print("Victoria");
