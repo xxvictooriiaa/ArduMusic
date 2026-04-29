@@ -46,9 +46,9 @@ void setup(){
   pinMode(LED_VERDE, OUTPUT);
   pinMode(LED_VERMELHA, OUTPUT);
   pinMode(BOTAO_UP, INPUT_PULLUP);
-  pinMode(BOTAO_DOWN, INPUT_PULLUP);
-  pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
-  pinMode(BOTAO_STOP, INPUT_PULLUP);
+  pinMode(BOTAO_DOWN, INPUT);
+  pinMode(BOTAO_PLAY_PAUSE, INPUT);
+  pinMode(BOTAO_STOP, INPUT);
   
   // bip de inicio - Por Lauanda
   tone(BUZZER, 220, 200);
@@ -136,22 +136,22 @@ void loop(){
   }
 
 
-/*
+
   // STOP --------------------
- if (digitalRead(BOTAO_STOP) == LOW) {
-    noTone(BUZZER);
+  if (digitalRead(BOTAO_STOP) == HIGH) {
+    noTone(BUZZER);           // Para o som imediatamente
     tocando = false;
     pausado = false;
-    musicaIniciada = false; // Vai dar reset pra poder tocar de novo
-    
+    musicaIniciada = false;   // Permite que a música recomece do zero no próximo Play
+
     digitalWrite(LED_VERDE, LOW);
     digitalWrite(LED_VERMELHA, HIGH);
     
+    // Volta visualmente para o menu
     mostrarMenu();
     delay(300);
-
   }
-  */
+
 }
 
 // ------------------ Função DO MENU ---------------------------
