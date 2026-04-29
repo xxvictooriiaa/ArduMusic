@@ -17,12 +17,12 @@
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 #define BUZZER 6
-#define LED_VERDE A2
+#define LED_VERDE A0
 #define LED_VERMELHA A1
 #define BOTAO_UP 9
 #define BOTAO_DOWN 7
 #define BOTAO_PLAY_PAUSE 8
-#define BOTAO_STOP 13
+#define BOTAO_STOP 10
 
 // Lista de Músicas -------------------------------------------------------------
 String musicas[] = {"Zelda", "PacMan", "Mario", "AsaBranca", "Nokia"};
@@ -46,9 +46,9 @@ void setup(){
   pinMode(LED_VERDE, OUTPUT);
   pinMode(LED_VERMELHA, OUTPUT);
   pinMode(BOTAO_UP, INPUT_PULLUP);
-  pinMode(BOTAO_DOWN, INPUT);
-  pinMode(BOTAO_PLAY_PAUSE, INPUT);
-  pinMode(BOTAO_STOP, INPUT);
+  pinMode(BOTAO_DOWN, INPUT_PULLUP);
+  pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
+  pinMode(BOTAO_STOP, INPUT_PULLUP);
   
   // bip de inicio - Por Lauanda
   tone(BUZZER, 220, 200);
@@ -96,25 +96,47 @@ void loop(){
     mostrarMenu();
     delay(300);
   }
-/*
-  /// Pausa e Play -------------
-if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
-    if (!tocando) {
+
+    /// Pausa e Play -------------
+  if (digitalRead(BOTAO_PLAY_PAUSE) == HIGH) {
+    if (musicaIniciada == false) {
+      // Se a música ainda não começou, dá o "Start"
       tocando = true;
       pausado = false;
+      musicaIniciada = true;
+      
       digitalWrite(LED_VERDE, HIGH);
       digitalWrite(LED_VERMELHA, LOW);
+      
+      lcd.setCursor(0, 1);
+      lcd.print("Tocando...     ");
     } 
     else {
-      pausado = !pausado;
-
-      // Futuramente vai Alterna os led entre Verde (Tocando) e Vermelho (Pausado)
-      digitalWrite(LED_VERDE, !pausado);
-      digitalWrite(LED_VERMELHA, pausado);
+      // Se a música já iniciou, apenas alterna entre Pausa e Play
+      if (pausado == true) {
+        pausado = false;
+        tocando = true;
+        digitalWrite(LED_VERDE, HIGH);
+        digitalWrite(LED_VERMELHA, LOW);
+        
+        lcd.setCursor(0, 1);
+        lcd.print("Tocando...     ");
+      } 
+      else {
+        pausado = true;
+        tocando = false;
+        digitalWrite(LED_VERDE, LOW);
+        digitalWrite(LED_VERMELHA, HIGH);
+        
+        lcd.setCursor(0, 1);
+        lcd.print("Pausado        ");
+      }
     }
-    delay(300);
+    delay(300); // Debounce para evitar cliques duplos
   }
 
+
+/*
   // STOP --------------------
  if (digitalRead(BOTAO_STOP) == LOW) {
     noTone(BUZZER);
