@@ -109,7 +109,7 @@ void loop(){
       digitalWrite(LED_VERMELHA, LOW);
       
       lcd.setCursor(0, 1);
-      lcd.print("Tocando...     ");
+      lcd.print("Tocando...");
     } 
     else {
       // Se a música já iniciou, apenas alterna entre Pausa e Play
@@ -120,7 +120,7 @@ void loop(){
         digitalWrite(LED_VERMELHA, LOW);
         
         lcd.setCursor(0, 1);
-        lcd.print("Tocando...     ");
+        lcd.print("Tocando...");
       } 
       else {
         pausado = true;
@@ -129,7 +129,7 @@ void loop(){
         digitalWrite(LED_VERMELHA, HIGH);
         
         lcd.setCursor(0, 1);
-        lcd.print("Pausado        ");
+        lcd.print("Pausado");
       }
     }
     delay(300); // Debounce para evitar cliques duplos
