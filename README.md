@@ -122,8 +122,21 @@ void mostrarMenu() {
 
   // LINHA 1: Instrução para o usuário
   lcd.setCursor(0, 1);
-  lcd.print("Selecione..."); 
-}
+  lcd.print("Selecione...");
 ```
-## Imagem :
-  <img src="imagens/arduino2.png" width="500">
+##
+
+## Atualização do Projeto – Dia 29/04/2026
+
+No dia 29/04/2026 foram realizadas melhorias na inicialização e no funcionamento geral do sistema. Foi adicionado um fluxo de abertura no display LCD, exibindo o nome do projeto e os créditos das desenvolvedoras antes de entrar no menu principal, deixando a experiência mais organizada e intuitiva desde o início.
+
+Também foi implementado um bip sonoro de inicialização utilizando o buzzer, indicando que o sistema foi ligado corretamente. A lógica dos botões foi ajustada para melhorar a resposta dos comandos, incluindo o uso de pull-up interno em parte das entradas.
+
+O controle de reprodução foi refinado com a organização dos estados do sistema, permitindo distinguir melhor quando a música está tocando, pausada ou ainda não foi iniciada. O botão de Play/Pause passou a iniciar a música caso ela ainda não tenha começado e, caso já esteja em execução, alterna entre os estados de reprodução e pausa.
+
+Além disso, o display passou a exibir mensagens como “Tocando...” e “Pausado”, enquanto os LEDs fornecem um retorno visual claro, indicando o estado atual do sistema. A função de Stop também foi mantida, garantindo a interrupção imediata da música, o reset dos estados e o retorno ao menu principal.
+
+Com essas alterações, o sistema se tornou mais completo, apresentando uma interação mais clara e uma experiência mais fluida para o usuário.
+
+## Menu :
+<img src="imagens/Tinkercad2904.gif" width="500">
