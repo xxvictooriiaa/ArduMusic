@@ -152,4 +152,6 @@ Também foi desenvolvida a função responsável por executar as melodias, que s
 
 A lógica de reprodução foi integrada ao loop principal, garantindo que a música só seja executada quando o sistema estiver no estado correto, evitando reinicializações indevidas.
 
+## Imagem :
+<img src="imagens/arduinotocando.png" width="500">
 
