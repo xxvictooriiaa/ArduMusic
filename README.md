@@ -140,3 +140,16 @@ Com essas alterações, o sistema se tornou mais completo, apresentando uma inte
 
 ## Menu :
 <img src="imagens/Tinkercad2904.gif" width="500">
+
+##
+## Atualização do Projeto – Dia 02/05/2026
+
+No dia 02/05/2026 foi realizada a implementação completa do sistema de reprodução de músicas no buzzer, consolidando o funcionamento do projeto.
+
+Foram adicionadas as definições de notas musicais e estruturadas as melodias das músicas selecionadas, incluindo temas como Zelda, PacMan, Mario, Asa Branca e Nokia. A partir disso, foi possível criar um sistema capaz de reproduzir sequências de notas com diferentes durações, simulando músicas reais através do buzzer.
+
+Também foi desenvolvida a função responsável por executar as melodias, que seleciona automaticamente a música com base na opção escolhida no menu e controla o tempo de cada nota. Durante a execução, o sistema passou a responder em tempo real aos comandos do usuário, permitindo pausar ou parar a música a qualquer momento.
+
+A lógica de reprodução foi integrada ao loop principal, garantindo que a música só seja executada quando o sistema estiver no estado correto, evitando reinicializações indevidas.
+
+
