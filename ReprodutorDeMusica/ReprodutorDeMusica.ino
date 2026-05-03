@@ -8,11 +8,12 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 02/05/2026 as 13:56
+ * ÚLTIMA MODIFICAÇÃO: 03/04/2026 as 16:37
  * VERSÃO: 0.1.0
  * =========================================================================
  */
 #include <LiquidCrystal.h>
+#include <avr/pgmspace.h>
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
@@ -123,8 +124,8 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 // --- musicas---
 
 // 1 - Zelda
-int tempoZelda = 88; 
-int melodiaZelda[] = {
+const int tempoZelda PROGMEM = 88; 
+const int melodiaZelda[] PROGMEM = {
   NOTE_AS4,-2, NOTE_F4,8, NOTE_F4,8, NOTE_AS4,8, NOTE_GS4,16, NOTE_FS4,16, NOTE_GS4,-2,
   NOTE_AS4,-2, NOTE_FS4,8, NOTE_FS4,8, NOTE_AS4,8, NOTE_A4,16, NOTE_G4,16, NOTE_A4,-2, REST,1, 
   NOTE_AS4,4, NOTE_F4,-4, NOTE_AS4,8, NOTE_AS4,16, NOTE_C5,16, NOTE_D5,16, NOTE_DS5,16,
@@ -135,16 +136,16 @@ int melodiaZelda[] = {
 };
 
 // 2 - Pac man
-int tempopacman = 105; 
-int melodiaPacMan[] = {
+const int tempopacman PROGMEM = 105; 
+const int melodiaPacMan[] PROGMEM = {
   NOTE_B4, 16, NOTE_B5, 16, NOTE_FS5, 16, NOTE_DS5, 16, NOTE_B5, 32, NOTE_FS5, -16, NOTE_DS5, 8, NOTE_C5, 16,
   NOTE_C6, 16, NOTE_G6, 16, NOTE_E6, 16, NOTE_C6, 32, NOTE_G6, -16, NOTE_E6, 8, NOTE_B4, 16, NOTE_B5, 16, NOTE_FS5, 16, NOTE_DS5, 16, NOTE_B5, 32,
   NOTE_FS5, -16, NOTE_DS5, 8, NOTE_DS5, 32, NOTE_E5, 32, NOTE_F5, 32, NOTE_F5, 32, NOTE_FS5, 32, NOTE_G5, 32, NOTE_G5, 32, NOTE_GS5, 32, NOTE_A5, 16, NOTE_B5, 8
 };
 
 // 3- Mario
-int tempomario = 100; 
-int melodiaMario[] = {
+const int tempomario PROGMEM = 100; 
+const int melodiaMario[] PROGMEM = {
   NOTE_E5,8, NOTE_E5,8, REST,8, NOTE_E5,8, REST,8, NOTE_C5,8, NOTE_E5,8, NOTE_G5,4, REST,4, NOTE_G4,8, REST,4, 
   NOTE_C5,-4, NOTE_G4,8, REST,4, NOTE_E4,-4, NOTE_A4,4, NOTE_B4,4, NOTE_AS4,8, NOTE_A4,4,
   NOTE_G4,-8, NOTE_E5,-8, NOTE_G5,-8, NOTE_A5,4, NOTE_F5,8, NOTE_G5,8, REST,8, NOTE_E5,4,NOTE_C5,8, NOTE_D5,8, NOTE_B4,-4
@@ -152,8 +153,8 @@ int melodiaMario[] = {
 
 //4- Asa Branca
 
-int tempoasabranca = 120; 
-int melodiaasabranca[] = {
+const int tempoasabranca PROGMEM = 120; 
+const int melodiaasabranca[] PROGMEM = {
   NOTE_G4,8, NOTE_A4,8, NOTE_B4,4, NOTE_D5,4, NOTE_D5,4, NOTE_B4,4, NOTE_C5,4, NOTE_C5,2, NOTE_G4,8, NOTE_A4,8,
   NOTE_B4,4, NOTE_D5,4, NOTE_D5,4, NOTE_C5,4, NOTE_B4,2, REST,8, NOTE_G4,8, NOTE_G4,8, NOTE_A4,8,
   NOTE_B4,4, NOTE_D5,4, REST,8, NOTE_D5,8, NOTE_C5,8, NOTE_B4,8, NOTE_G4,4, NOTE_C5,4, REST,8, NOTE_C5,8, NOTE_B4,8, NOTE_A4,8
@@ -161,18 +162,20 @@ int melodiaasabranca[] = {
 
 //5- Nokia
 
-int temponokia = 180; 
-int melodiaNokia[] = {
+const int temponokia PROGMEM = 180; 
+const int melodiaNokia[] PROGMEM = {
   NOTE_E5, 8, NOTE_D5, 8, NOTE_FS4, 4, NOTE_GS4, 4, NOTE_CS5, 8, NOTE_B4, 8, NOTE_D4, 4, NOTE_E4, 4, 
   NOTE_B4, 8, NOTE_A4, 8, NOTE_CS4, 4, NOTE_E4, 4, NOTE_A4, 2
 };
 
+// Nomes das músicas em PROGMEM
+const char nome_Zelda[] PROGMEM = "Zelda";
+const char nome_PacMan[] PROGMEM = "PacMan";
+const char nome_Mario[] PROGMEM = "Mario";
+const char nome_AsaBranca[] PROGMEM = "AsaBranca";
+const char nome_Nokia[] PROGMEM = "Nokia";
 
-
-
-
-// Lista de Músicas -------------------------------------------------------------
-String musicas[] = {"Zelda", "PacMan", "Mario", "AsaBranca", "Nokia"};
+const char* const musicas[] PROGMEM = {nome_Zelda, nome_PacMan, nome_Mario, nome_AsaBranca, nome_Nokia};
 int musicaselecionada = 0;
 
 bool tocando = false;
@@ -314,7 +317,11 @@ void mostrarMenu() {
   lcd.setCursor(0, 0);
   lcd.print(musicaselecionada + 1); 
   lcd.print("/5 ");
-  lcd.print(musicas[musicaselecionada]);
+  
+  // Ler string de PROGMEM
+  char nomeMusica[15];
+  strcpy_P(nomeMusica, (const char*)pgm_read_word(&musicas[musicaselecionada]));
+  lcd.print(nomeMusica);
 
   // LINHA 1: Instrução para o usuário
   lcd.setCursor(0, 1);
@@ -336,15 +343,15 @@ void pararMusica() {
 }
 
 void executarMelodia(int musica) {
-  int *melodia;
+  const int *melodia;
   int notas;
   int tempo;
 
-  if (musica == 0) { melodia = melodiaZelda; notas = sizeof(melodiaZelda)/sizeof(int)/2; tempo = tempoZelda; }
-  else if (musica == 1) { melodia = melodiaPacMan; notas = sizeof(melodiaPacMan)/sizeof(int)/2; tempo = tempopacman; }
-  else if (musica == 2) { melodia = melodiaMario; notas = sizeof(melodiaMario)/sizeof(int)/2; tempo = tempomario; }
-  else if (musica == 3) { melodia = melodiaasabranca; notas = sizeof(melodiaasabranca)/sizeof(int)/2; tempo = tempoasabranca; }
-  else { melodia = melodiaNokia; notas = sizeof(melodiaNokia)/sizeof(int)/2; tempo = temponokia; }
+  if (musica == 0) { melodia = melodiaZelda; notas = sizeof(melodiaZelda)/sizeof(int)/2; tempo = pgm_read_word(&tempoZelda); }
+  else if (musica == 1) { melodia = melodiaPacMan; notas = sizeof(melodiaPacMan)/sizeof(int)/2; tempo = pgm_read_word(&tempopacman); }
+  else if (musica == 2) { melodia = melodiaMario; notas = sizeof(melodiaMario)/sizeof(int)/2; tempo = pgm_read_word(&tempomario); }
+  else if (musica == 3) { melodia = melodiaasabranca; notas = sizeof(melodiaasabranca)/sizeof(int)/2; tempo = pgm_read_word(&tempoasabranca); }
+  else { melodia = melodiaNokia; notas = sizeof(melodiaNokia)/sizeof(int)/2; tempo = pgm_read_word(&temponokia); }
 
   int wholenote = (60000 * 4) / tempo;
 
@@ -357,10 +364,10 @@ void executarMelodia(int musica) {
       delay(300); return; 
     }
 
-    int divider = melodia[thisNote + 1];
+    int divider = pgm_read_word(&melodia[thisNote + 1]);
     int noteDuration = (divider > 0) ? (wholenote / divider) : (wholenote / abs(divider) * 1.5);
 
-    tone(BUZZER, melodia[thisNote], noteDuration * 0.9);
+    tone(BUZZER, pgm_read_word(&melodia[thisNote]), noteDuration * 0.9);
     delay(noteDuration);
     noTone(BUZZER);
   }
