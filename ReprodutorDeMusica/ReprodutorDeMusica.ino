@@ -183,6 +183,10 @@ bool tocando = false;
 bool pausado = false;
 bool musicaIniciada = false;
 
+// Variáveis para controlar pausa
+int indiceMusicaPausada = -1;  // Índice da nota onde pausou
+int posicaoNotaPausada = 0;    // Posição dentro da nota
+
 //--------------------------------------------------------------------------------------
 
 void setup(){
@@ -238,12 +242,20 @@ void loop(){
 
   // botão próxima musica PULL UP
   if (digitalRead(BOTAO_UP) == LOW) {
+    tocando = false;
+    pausado = false;
+    musicaIniciada = false;
+    indiceMusicaPausada = -1;
     musicaSelecionada = (musicaSelecionada + 1) % 5;
     mostrarMenu();
     delay(300);
   }
   // botão música anterior PULL DOWN
   if (digitalRead(BOTAO_DOWN) == HIGH) {
+    tocando = false;
+    pausado = false;
+    musicaIniciada = false;
+    indiceMusicaPausada = -1;
     musicaSelecionada = (musicaSelecionada - 1 + 5) % 5;
     mostrarMenu();
     delay(300);
@@ -256,6 +268,7 @@ void loop(){
       tocando = true;
       pausado = false;
       musicaIniciada = true;
+      indiceMusicaPausada = -1; // Inicia do começo
       
       digitalWrite(LED_VERDE, HIGH);
       digitalWrite(LED_VERMELHA, LOW);
@@ -263,26 +276,25 @@ void loop(){
       lcd.setCursor(0, 1);
       lcd.print("Tocando...");
     } 
+    else if (pausado == true) {
+      // Se está pausada, resume de onde parou
+      pausado = false;
+      tocando = true;
+      digitalWrite(LED_VERDE, HIGH);
+      digitalWrite(LED_VERMELHA, LOW);
+      
+      lcd.setCursor(0, 1);
+      lcd.print("Tocando...");
+    }
     else {
-      // Se a música já iniciou, apenas alterna entre Pausa e Play
-      if (pausado == true) {
-        pausado = false;
-        tocando = true;
-        digitalWrite(LED_VERDE, HIGH);
-        digitalWrite(LED_VERMELHA, LOW);
-        
-        lcd.setCursor(0, 1);
-        lcd.print("Tocando...");
-      } 
-      else {
-        pausado = true;
-        tocando = false;
-        digitalWrite(LED_VERDE, LOW);
-        digitalWrite(LED_VERMELHA, HIGH);
-        
-        lcd.setCursor(0, 1);
-        lcd.print("Pausado");
-      }
+      // Se está tocando, pausa
+      pausado = true;
+      tocando = false;
+      digitalWrite(LED_VERDE, LOW);
+      digitalWrite(LED_VERMELHA, HIGH);
+      
+      lcd.setCursor(0, 1);
+      lcd.print("Pausado");
     }
     delay(300); // Debounce para evitar cliques duplos
   }
@@ -295,6 +307,7 @@ void loop(){
     tocando = false;
     pausado = false;
     musicaIniciada = false;   // Permite que a música recomece do zero no próximo Play
+    indiceMusicaPausada = -1; // Reseta a posição de pausa
 
     digitalWrite(LED_VERDE, LOW);
     digitalWrite(LED_VERMELHA, HIGH);
@@ -345,10 +358,38 @@ void pararMusica() {
   tocando = false;
   pausado = false;
   musicaIniciada = false;
+  indiceMusicaPausada = -1; // Reseta a posição de pausa
   digitalWrite(LED_VERDE, LOW);
   digitalWrite(LED_VERMELHA, HIGH);
   mostrarMenu();
 }
+
+void pausarMusica() {
+  pausado = true;
+  tocando = false;
+  
+  atualizarLEDs(); 
+  
+  lcd.setCursor(0, 1);
+  lcd.print("Pausado   ");
+  
+  delay(300); //tempo suficiente para o botão não registrar dois clicks
+}
+
+int calcularDuracao(int divisor, int tempo) {
+  int wholenote = (60000 * 4) / tempo; // Calcula a duração de uma nota inteira
+  int duracao;
+
+  if (divisor > 0) {
+    duracao = wholenote / divisor;
+  } else {
+    // Notas pontuadas (valores negativos)
+    duracao = (wholenote / abs(divisor)) * 1.5;
+  }
+  
+  return duracao;
+}
+
 
 void executarMelodia(int musica) {
   const int *melodia;
@@ -388,23 +429,34 @@ void executarMelodia(int musica) {
   }
 
   int wholenote = (60000 * 4) / tempo;
+  int comeco = (indiceMusicaPausada >= 0) ? indiceMusicaPausada : 0;
 
-  for (int thisNote = 0; thisNote < notas * 2; thisNote = thisNote + 2) {
-    // Verifica se houve comando de Stop ou Pause durante a música
-    if (digitalRead(BOTAO_STOP) == HIGH) { pararMusica(); return; }
+  for (int i = comeco; i < notas * 2; i += 2) {
+  
+    // verifica se tem alguns click para interromper
+    if (digitalRead(BOTAO_STOP) == HIGH) { 
+      pararMusica(); 
+      return; 
+    }
+  
     if (digitalRead(BOTAO_PLAY_PAUSE) == HIGH) { 
-      pausado = true; tocando = false; atualizarLEDs(); 
-      lcd.setCursor(0,1); lcd.print("Pausado   ");
-      delay(300); return; 
+      indiceMusicaPausada = i; // Salva a posição onde pausou
+      pausarMusica();
+      return; // Retorna sem chamar pararMusica()
     }
 
-    int divider = pgm_read_word(&melodia[thisNote + 1]);
-    int noteDuration = (divider > 0) ? (wholenote / divider) : (wholenote / abs(divider) * 1.5);
+    // calcula a duração da nota
+    int divisor = pgm_read_word(&melodia[i + 1]);
+    int duracaoNota = calcularDuracao(divisor, tempo);
 
-    tone(BUZZER, pgm_read_word(&melodia[thisNote]), noteDuration * 0.9);
-    delay(noteDuration);
+    //tocar a nota
+    int frequencia = pgm_read_word(&melodia[i]);
+    tone(BUZZER, frequencia, duracaoNota * 0.9);
+    delay(duracaoNota); 
     noTone(BUZZER);
   }
-  
+
+  // Ao terminar a música, reseta o índice de pausa
+  indiceMusicaPausada = -1;
   pararMusica(); 
 }
