@@ -167,7 +167,7 @@ A lógica de reprodução foi integrada ao loop principal, garantindo que a mús
 
 ## Atualização do Projeto – Dia 03/05/2026
 
-No dia 03/05/2026 foram realizadas otimizações de memória e melhorias na funcionalidade de pausa do sistema, que não estavam funcionando :( .
+No dia 03/05/2026 foram realizadas otimizações de memória e melhorias na funcionalidade de pausa do sistema, que não estavam funcionando.
 
 Primeiramente, as melodias foram movidas da RAM para a memória Flash utilizando `PROGMEM` e a biblioteca `#include <avr/pgmspace.h>`. As melodias passaram a ser lidas corretamente da Flash memory utilizando `pgm_read_word()`.
 
