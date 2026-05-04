@@ -327,10 +327,17 @@ void mostrarMenu() {
   lcd.setCursor(0, 1);
   lcd.print("Selecione..."); 
 }
+
 void atualizarLEDs() {
-  digitalWrite(LED_VERDE, tocando ? HIGH : LOW);
-  digitalWrite(LED_VERMELHA, tocando ? LOW : HIGH);
+  if (tocando) {
+    digitalWrite(LED_VERDE, HIGH);
+    digitalWrite(LED_VERMELHA, LOW);
+  } else {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_VERMELHA, HIGH);
+  }
 }
+
 
 void pararMusica() {
   noTone(BUZZER);
