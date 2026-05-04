@@ -355,11 +355,37 @@ void executarMelodia(int musica) {
   int notas;
   int tempo;
 
-  if (musica == 0) { melodia = melodiaZelda; notas = sizeof(melodiaZelda)/sizeof(int)/2; tempo = pgm_read_word(&tempoZelda); }
-  else if (musica == 1) { melodia = melodiaPacMan; notas = sizeof(melodiaPacMan)/sizeof(int)/2; tempo = pgm_read_word(&tempopacman); }
-  else if (musica == 2) { melodia = melodiaMario; notas = sizeof(melodiaMario)/sizeof(int)/2; tempo = pgm_read_word(&tempomario); }
-  else if (musica == 3) { melodia = melodiaasabranca; notas = sizeof(melodiaasabranca)/sizeof(int)/2; tempo = pgm_read_word(&tempoasabranca); }
-  else { melodia = melodiaNokia; notas = sizeof(melodiaNokia)/sizeof(int)/2; tempo = pgm_read_word(&temponokia); }
+  switch (musica) {
+    case 0:
+      melodia = melodiaZelda;
+      notas = sizeof(melodiaZelda) / sizeof(int) / 2;
+      tempo = pgm_read_word(&tempoZelda);
+      break;
+
+    case 1:
+      melodia = melodiaPacMan;
+      notas = sizeof(melodiaPacMan) / sizeof(int) / 2;
+      tempo = pgm_read_word(&tempopacman);
+      break;
+
+    case 2:
+      melodia = melodiaMario;
+      notas = sizeof(melodiaMario) / sizeof(int) / 2;
+      tempo = pgm_read_word(&tempomario);
+      break;
+
+    case 3:
+      melodia = melodiaasabranca;
+      notas = sizeof(melodiaasabranca) / sizeof(int) / 2;
+      tempo = pgm_read_word(&tempoasabranca);
+      break;
+
+    default: // Caso seja a música 4 ou qualquer outra não listada
+      melodia = melodiaNokia;
+      notas = sizeof(melodiaNokia) / sizeof(int) / 2;
+      tempo = pgm_read_word(&temponokia);
+      break;
+  }
 
   int wholenote = (60000 * 4) / tempo;
 
