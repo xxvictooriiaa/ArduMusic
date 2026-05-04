@@ -377,14 +377,16 @@ void pausarMusica() {
 }
 
 int calcularDuracao(int divisor, int tempo) {
-  int wholenote = (60000 * 4) / tempo; // Calcula a duração de uma nota inteira
+  // Calcula a duração de uma nota inteira em milissegundos
+  // 60000 ms/min ÷ tempo (em BPM) × 4 = duração da semibreve
+  int duracaoNotaInteira = (60000 * 4) / tempo;
   int duracao;
 
   if (divisor > 0) {
-    duracao = wholenote / divisor;
+    duracao = duracaoNotaInteira / divisor;
   } else {
-    // Notas pontuadas (valores negativos)
-    duracao = (wholenote / abs(divisor)) * 1.5;
+    // Notas pontuadas (valores negativos) = 1.5x a duração
+    duracao = (duracaoNotaInteira / abs(divisor)) * 1.5;
   }
   
   return duracao;
@@ -428,10 +430,14 @@ void executarMelodia(int musica) {
       break;
   }
 
-  int wholenote = (60000 * 4) / tempo;
-  int comeco = (indiceMusicaPausada >= 0) ? indiceMusicaPausada : 0;
+  //calcular a duração de uma nota inteira em milissegundos
+  // 60000 ms/min ÷ tempo (em BPM) × 4 = duração da semibreve
+  int duracaoNotaInteira = (60000 * 4) / tempo;
+  
+  // Determinar por onde começar caso esteja no estado pausado
+  int indiceInicial = max(0, indiceMusicaPausada);
 
-  for (int i = comeco; i < notas * 2; i += 2) {
+  for (int i = indiceInicial; i < notas * 2; i += 2) {
   
     // verifica se tem alguns click para interromper
     if (digitalRead(BOTAO_STOP) == HIGH) { 
