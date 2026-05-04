@@ -8,7 +8,7 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 03/04/2026 as 16:37
+ * ÚLTIMA MODIFICAÇÃO: 03/04/2026 as 21:30
  * VERSÃO: 0.1.0
  * =========================================================================
  */
@@ -17,6 +17,7 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
+// defines para as portas do microcontrolador
 #define BUZZER 6
 #define LED_VERDE A0
 #define LED_VERMELHA A1
@@ -121,7 +122,7 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 //------------------------------------
 
 
-// --- musicas---
+// musicas
 
 // 1 - Zelda
 const int tempoZelda PROGMEM = 88; 
@@ -176,7 +177,7 @@ const char nome_AsaBranca[] PROGMEM = "AsaBranca";
 const char nome_Nokia[] PROGMEM = "Nokia";
 
 const char* const musicas[] PROGMEM = {nome_Zelda, nome_PacMan, nome_Mario, nome_AsaBranca, nome_Nokia};
-int musicaselecionada = 0;
+int musicaSelecionada = 0;
 
 bool tocando = false;
 bool pausado = false;
@@ -234,15 +235,16 @@ void setup(){
 void loop(){
   //noTone(BUZZER);
   //digitalWrite(BUZZER,LOW);
+
   // botão próxima musica PULL UP
   if (digitalRead(BOTAO_UP) == LOW) {
-    musicaselecionada = (musicaselecionada + 1) % 5;
+    musicaSelecionada = (musicaSelecionada + 1) % 5;
     mostrarMenu();
     delay(300);
   }
   // botão música anterior PULL DOWN
   if (digitalRead(BOTAO_DOWN) == HIGH) {
-    musicaselecionada = (musicaselecionada - 1 + 5) % 5;
+    musicaSelecionada = (musicaSelecionada - 1 + 5) % 5;
     mostrarMenu();
     delay(300);
   }
@@ -303,24 +305,24 @@ void loop(){
   }
 
 
-// tocar musica
+  // tocar musica
   if (tocando && !pausado && musicaIniciada) {
-    executarMelodia(musicaselecionada);
+    executarMelodia(musicaSelecionada);
   }
 }
 
-// ------------------ Função DO MENU ---------------------------
+
 void mostrarMenu() {
   lcd.clear();
   
   // LINHA 0: Mostra a posição e o nome da música
   lcd.setCursor(0, 0);
-  lcd.print(musicaselecionada + 1); 
+  lcd.print(musicaSelecionada + 1); 
   lcd.print("/5 ");
   
   // Ler string de PROGMEM
   char nomeMusica[15];
-  strcpy_P(nomeMusica, (const char*)pgm_read_word(&musicas[musicaselecionada]));
+  strcpy_P(nomeMusica, (const char*)pgm_read_word(&musicas[musicaSelecionada]));
   lcd.print(nomeMusica);
 
   // LINHA 1: Instrução para o usuário
@@ -337,7 +339,6 @@ void atualizarLEDs() {
     digitalWrite(LED_VERMELHA, HIGH);
   }
 }
-
 
 void pararMusica() {
   noTone(BUZZER);
