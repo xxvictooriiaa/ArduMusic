@@ -1,6 +1,6 @@
 # ArduMusic
-Um software arduino para tocar musicas em bips de buzzer
 
+Um software arduino para tocar musicas em bips de buzzer
 
 ## Montagem inicial do projeto – Dia 20/04/2026
 
@@ -8,15 +8,14 @@ No dia **20/04/2026** foi realizada a montagem inicial do circuito do projeto de
 
 Abaixo os seguintes Componentes Eletrônicos e suas funcionalidades no projeto:
 
-- Display LCD 16x2 para exibição das informações do sistema  
-- Potenciômetro para ajuste de contraste do display 
+- Display LCD 16x2 para exibição das informações do sistema
+- Potenciômetro para ajuste de contraste do display
 - Buzzer para reprodução sonora
 - LEDs, sendo uma verde e uma vermelha para sinalização do estado da musica, tocando ou pausada
 - Quatro botões para controle de navegação e seleção das musicas
 - Resistores para proteção dos demais componentes
 
 O objetivo desta etapa foi validar a comunicação entre os componentes e implementar uma estrutura inicial para a implementação do software nas próximas fases.
-
 
 ## Imagem da montagem
 
@@ -27,6 +26,7 @@ O objetivo desta etapa foi validar a comunicação entre os componentes e implem
   <img src="imagens/vistaesquematizada01.png" width="500">
 
 ## Lista de Componentes
+
 <img src="imagens/componentes 01.png" width="500">
 
 ##
@@ -43,16 +43,20 @@ pinMode(BOTAO_DOWN, INPUT_PULLUP);
 pinMode(BOTAO_PLAY_PAUSE, INPUT_PULLUP);
 pinMode(BOTAO_STOP, INPUT_PULLUP);
 ```
+
 ##
 
 ## Atualização do projeto – Dia 26/04/2026
- No dia **26/04/2026**, foi feito o código para a Navegação de Pull Up(Mexer Para Cima) e Pull Down(Mexer para Baixo), uma lógica de menu utilizando aritmética modular (%), permitando que o usuário navegue entre as 5 músicas de forma infinita retornando ao início ou ao fim da lista automaticamente. Também foi acrescentado o estado de Play,Pause e Stop, onde o mesmo botão alterna entre os estados de "Tocando" e "Pausado" (Toggle). O botão de Stop foi configurado para realizar um reset total das variáveis e interromper o sinal sonoro imediatamente.E por fim, foi colocado a função mostrarMenu() para exibir no LCD a posição real da faixa e o nome da música, mantendo uma instrução fixa de "Selecione..." na segunda linha para melhor usabilidade.
+
+No dia **26/04/2026**, foi feito o código para a Navegação de Pull Up(Mexer Para Cima) e Pull Down(Mexer para Baixo), uma lógica de menu utilizando aritmética modular (%), permitando que o usuário navegue entre as 5 músicas de forma infinita retornando ao início ou ao fim da lista automaticamente. Também foi acrescentado o estado de Play,Pause e Stop, onde o mesmo botão alterna entre os estados de "Tocando" e "Pausado" (Toggle). O botão de Stop foi configurado para realizar um reset total das variáveis e interromper o sinal sonoro imediatamente.E por fim, foi colocado a função mostrarMenu() para exibir no LCD a posição real da faixa e o nome da música, mantendo uma instrução fixa de "Selecione..." na segunda linha para melhor usabilidade.
 
 Também foi feitas implementações para o futuro como:
+
 - Integração dos LEDs com as variáveis de estado, onde o LED verde indica reprodução ativa e o LED vermelho sinaliza pausa ou parada do sistema.
--Implementação de uma trava lógica (musicaIniciada) para garantir que a melodia seja disparada apenas uma vez ao apertar play, evitando bugs de reinicialização contínua do som durante o loop.
+  -Implementação de uma trava lógica (musicaIniciada) para garantir que a melodia seja disparada apenas uma vez ao apertar play, evitando bugs de reinicialização contínua do som durante o loop.
 
 ## Codigo Implementado
+
 ```cpp
 // Config De Seleção de Música ---------------------------------------------------------------------
 void loop()
@@ -78,7 +82,7 @@ if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
       pausado = false;
       digitalWrite(LED_VERDE, HIGH);
       digitalWrite(LED_VERMELHA, LOW);
-    } 
+    }
     else {
       pausado = !pausado;
 
@@ -95,10 +99,10 @@ if (digitalRead(BOTAO_PLAY_PAUSE) == LOW) {
     tocando = false;
     pausado = false;
     musicaIniciada = false; // Vai dar reset pra poder tocar de novo
-    
+
     digitalWrite(LED_VERDE, LOW);
     digitalWrite(LED_VERMELHA, HIGH);
-    
+
     mostrarMenu();
     delay(300);
 
@@ -113,10 +117,10 @@ if (tocando && !pausado && !musicaIniciada) {
 // ------------------ Função DO MENU ---------------------------
 void mostrarMenu() {
   lcd.clear();
-  
+
   // LINHA 0: Mostra a posição e o nome da música
   lcd.setCursor(0, 0);
-  lcd.print(musicaselecionada + 1); 
+  lcd.print(musicaselecionada + 1);
   lcd.print("/5 ");
   lcd.print(musicas[musicaselecionada]);
 
@@ -124,6 +128,7 @@ void mostrarMenu() {
   lcd.setCursor(0, 1);
   lcd.print("Selecione...");
 ```
+
 ##
 
 ## Atualização do Projeto – Dia 29/04/2026
@@ -139,9 +144,11 @@ Além disso, o display passou a exibir mensagens como “Tocando...” e “Paus
 Com essas alterações, o sistema se tornou mais completo, apresentando uma interação mais clara e uma experiência mais fluida para o usuário.
 
 ## Menu :
+
 <img src="imagens/Tinkercad2904.gif" width="500">
 
 ##
+
 ## Atualização do Projeto – Dia 02/05/2026
 
 No dia 02/05/2026 foi realizada a implementação completa do sistema de reprodução de músicas no buzzer, consolidando o funcionamento do projeto.
@@ -153,5 +160,21 @@ Também foi desenvolvida a função responsável por executar as melodias, que s
 A lógica de reprodução foi integrada ao loop principal, garantindo que a música só seja executada quando o sistema estiver no estado correto, evitando reinicializações indevidas.
 
 ## Imagem :
+
 <img src="imagens/arduinotocando.png" width="500">
 
+##
+
+## Atualização do Projeto – Dia 03/05/2026
+
+No dia 03/05/2026 foram realizadas otimizações de memória e melhorias na funcionalidade de pausa do sistema, que não estavam funcionando :( .
+
+Primeiramente, as melodias foram movidas da RAM para a memória Flash utilizando `PROGMEM` e a biblioteca `#include <avr/pgmspace.h>`. As melodias passaram a ser lidas corretamente da Flash memory utilizando `pgm_read_word()`.
+
+Em seguida, foi implementado um sistema coerente de pausa que preserva a posição exata da música. Como funciona? Bom, a variável `indiceMusicaPausada` armazena o índice da nota onde a pausa foi acionada, permitindo que ao pressionar play novamente, a música continue exatamente de onde parou, em vez de reiniciar do início, como antes.
+OBS:
+O reset automático dos estados também foi implementado ao trocar de música.
+
+Por fim, foi realizada uma refatoração do código para melhor legibilidade, com nomes de variáveis mais descritivos (como `indiceInicial` em vez de `comeco`) e adição de comentários explicativos nas funções principais. Sim, o código acabou tendo muitos comentários...
+
+Isso é tudo :) ...
