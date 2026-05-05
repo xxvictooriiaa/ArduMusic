@@ -430,11 +430,11 @@ void executarMelodia(int musica) {
       break;
   }
 
-  //calcular a duração de uma nota inteira em milissegundos
+  // Calcula a duração de uma nota inteira em milissegundos
   // 60000 ms/min ÷ tempo (em BPM) × 4 = duração da semibreve
   int duracaoNotaInteira = (60000 * 4) / tempo;
   
-  // Determinar por onde começar caso esteja no estado pausado
+  // Determina por onde começar caso esteja no estado pausado
   int indiceInicial = max(0, indiceMusicaPausada);
 
   for (int i = indiceInicial; i < notas * 2; i += 2) {
