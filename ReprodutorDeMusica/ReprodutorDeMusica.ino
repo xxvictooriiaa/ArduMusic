@@ -8,8 +8,8 @@
  * 
  * AUTORES: Lauanda Nobre E Victória Caroline
  * DATA DE CRIAÇÃO: 19/04/2026
- * ÚLTIMA MODIFICAÇÃO: 04/04/2026 as 21:30
- * VERSÃO: 0.1.0
+ * ÚLTIMA MODIFICAÇÃO: 09/04/2026 as 20:38
+ * VERSÃO: 1.0.0
  * =========================================================================
  */
 #include <LiquidCrystal.h>
